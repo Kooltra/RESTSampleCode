@@ -28,20 +28,28 @@ def push_trades(account_code, num):
 	input_list = []
 	for i in range(num):
 		buysell = ['BUY', 'SELL'][random.randint(0,1)]
-		ccy = ['EURGBP', 'EURUSD', 'USDCAD', 'AUDCAD', 'AUDUSD', 'GBPUSD', 'USDJPY'][random.randint(0,6)]
-		new_trade = generate_new_spot_trade(account_code, buysell, 1000+i, 1.2+i/100.0, ccy[:3], ccy[3:], True)
+		ccy_pairs = ['USDCAD', 'EURUSD', 'USDCHF', 'GBPUSD', 'EURCAD', 'USDNZD', 'USDJPY', 'AUDUSD']
+		#ccy_pairs = ccy_pairs + ['EURAUD', 'EURJPY', 'EURCHF', 'EURGBP', 'AUDCAD', 'GBPCHF', 'GBPJPY']
+		#ccy_pairs = ccy_pairs + ['CHFJPY', 'AUDJPY', 'AUDNZD']
+		pair = ccy_pairs[random.randint(0,len(ccy_pairs)-1)]
+		new_trade = generate_new_spot_trade(account_code, buysell, 1000+i, 1.2+i/100.0, pair[:3], pair[3:], True)
 		input_list.append(new_trade)
 
 	o = salesforce.OrgConnection()
 
 	request = json.dumps({"submit":input_list})
 
-	o.conn.request('POST', '/services/apexrest/Kooltra/transactions/Trade', headers=o.headers, body=request)
+	o.conn.request('POST', o.base_url + 'transactions/Trade', headers=o.headers, body=request)
+	
 
-
-for i in range(80):
-	push_trades('MT4EODTEST', 15)
-	time.sleep(2)
+num_accounts = 1
+for account in range(num_accounts):
+	accountCode = 'EOD' + str(account) #accountCode = 'EOD0'
+	num_trade_batches = 30
+	batch_size = 20
+	for i in range(num_trade_batches):
+		push_trades(accountCode, batch_size)
+		time.sleep(1)
 
 
 

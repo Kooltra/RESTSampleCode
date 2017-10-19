@@ -29,17 +29,14 @@ def push_accounts(names):
 	o = salesforce.OrgConnection()
 
 	request = json.dumps({"submit":input_list})
-	print request
-	o.conn.request('POST', '/services/apexrest/Kooltra/staticdata/Account', headers=o.headers, body=request)
-
-	print o.conn.getresponse().reason
-
+	o.conn.request('POST', o.base_url + 'staticdata/Account', headers=o.headers, body=request)
 
 
 def main():
-	for i in range(10):
+	num_batches = 10
+	for i in range(num_batches):
 		batch = 8
-		names = ['EOD' + str(j) for j in range(i*batch, i*batch+batch)]
+		names = ['EOD' + str(j) for j in range(i*batch, i*batch + batch)]
 		push_accounts(names)
 		time.sleep(2)
 
