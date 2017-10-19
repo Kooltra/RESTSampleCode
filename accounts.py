@@ -19,11 +19,11 @@ def generate_new_account(name, code, entity, settlement_type, base_currency):
 
 	return account
 
-def push_accounts(names):
+def push_accounts(names, entity):
 	input_list = []
 	for name in names:
 		base_currency = ['EUR', 'USD', 'CAD', 'GBP'][random.randint(0,3)]
-		new_account = generate_new_account(name, name, 'MT4TEST', 'MT4 CLIENT', base_currency)
+		new_account = generate_new_account(name, name, entity, 'MT4 CLIENT', base_currency)
 		input_list.append(new_account)
 
 	o = salesforce.OrgConnection()
@@ -34,10 +34,11 @@ def push_accounts(names):
 
 def main():
 	num_batches = 10
+	entity = 'MT4TEST'
 	for i in range(num_batches):
 		batch = 8
 		names = ['EOD' + str(j) for j in range(i*batch, i*batch + batch)]
-		push_accounts(names)
+		push_accounts(names, entity)
 		time.sleep(2)
 
 if __name__ == '__main__':
