@@ -7,14 +7,14 @@ oauth_suffix = "/services/oauth2/token"
 
 creds = json.load(open("credentials.json", 'r'))
 
-class OrgConnection(name_space=''):
+class OrgConnection:
 	conn = httplib.HTTPSConnection(org_base_url)
 	headers = {"Content-Type": "application/x-www-form-urlencoded"}
 	base_url = '/services/apexrest/'
-	if name_space:
-		base_url += name_space + '/'
 
-	def __init__(self):
+	def __init__(self, name_space=''):
+		if name_space:
+			self.base_url += name_space + '/'
 		self.conn.request('POST', oauth_suffix + '?' + urllib.urlencode(creds),
 			headers=self.headers)
 		res = self.conn.getresponse()
