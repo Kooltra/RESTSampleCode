@@ -42,13 +42,14 @@ def push_trades(account_code, num):
 	request = json.dumps({"submit":input_list})
 
 	o.conn.request('POST', o.base_url + 'transactions/Trade', headers=o.headers, body=request)
+	print o.conn.getresponse().read()
 	
 
 num_accounts = 10
 for account in range(num_accounts):
 	accountCode = 'EOD' + str(account) #accountCode = 'EOD0'
-	num_trade_batches = 20
-	batch_size = 20
+	num_trade_batches = 10
+	batch_size = 10
 	for i in range(num_trade_batches):
 		push_trades(accountCode, batch_size)
 		#time.sleep(1)

@@ -10,7 +10,7 @@ creds = json.load(open("credentials.json", 'r'))
 class OrgConnection:
 	conn = httplib.HTTPSConnection(org_base_url)
 	headers = {"Content-Type": "application/x-www-form-urlencoded"}
-	base_url = '/services/apexrest/'
+	base_url = '/services/apexrest/Kooltra/'
 
 	def __init__(self, name_space=''):
 		if name_space:
