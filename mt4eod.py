@@ -46,7 +46,7 @@ def main():
 	o = salesforce.OrgConnection()
 	num_batches = 1
 	for i in range(num_batches):
-		batch = 1
+		batch = 10
 		accounts = ['EOD' + str(j) for j in range(i*batch, i*batch+batch)]
 		#accounts = ['EOD0']
 

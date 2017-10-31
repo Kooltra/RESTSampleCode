@@ -3,6 +3,7 @@ import json
 import random
 import salesforce
 import time
+import calendar
 
 def generate_new_spot_trade(account_code, trade_action, notional, rate, ccy1, ccy2, isMargin):
 	trade = {}
@@ -17,6 +18,7 @@ def generate_new_spot_trade(account_code, trade_action, notional, rate, ccy1, cc
 	trade['Rate'] = rate
 	trade['CCY1'] = ccy1
 	trade['CCY2'] = ccy2
+	trade['ExecutionTime'] = calendar.timegm(time.gmtime())*1000
 	trade['CounterAmount'] = notional * rate
 
 	if not isMargin:
@@ -42,14 +44,14 @@ def push_trades(account_code, num):
 	o.conn.request('POST', o.base_url + 'transactions/Trade', headers=o.headers, body=request)
 	
 
-num_accounts = 1
+num_accounts = 10
 for account in range(num_accounts):
 	accountCode = 'EOD' + str(account) #accountCode = 'EOD0'
-	num_trade_batches = 30
+	num_trade_batches = 20
 	batch_size = 20
 	for i in range(num_trade_batches):
 		push_trades(accountCode, batch_size)
-		time.sleep(1)
+		#time.sleep(1)
 
 
 

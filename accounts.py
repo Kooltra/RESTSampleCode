@@ -33,10 +33,10 @@ def push_accounts(names, entity):
 
 
 def main():
-	num_batches = 10
+	num_batches = 1
 	entity = 'MT4TEST'
 	for i in range(num_batches):
-		batch = 8
+		batch = 10
 		names = ['EOD' + str(j) for j in range(i*batch, i*batch + batch)]
 		push_accounts(names, entity)
 		time.sleep(2)
