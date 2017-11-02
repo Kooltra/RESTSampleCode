@@ -36,6 +36,8 @@ def send_eod_request(position, o):
 	mt4_request['balance'] = 3000
 	mt4_request['commissions'] = -77
 	mt4_request['CCYPairs'] = pairs
+	mt4_request['CCYPairs'] = pairs
+
 
 	request = json.dumps({'submit':[mt4_request]})
 	o.conn.request('POST', o.base_url + 'MT4BalanceMatching', headers=o.headers, body=request)
