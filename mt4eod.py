@@ -44,9 +44,9 @@ def send_eod_request(position, o):
 
 def main():
 	o = salesforce.OrgConnection()
-	num_batches = 1
+	num_batches = 10
 	for i in range(num_batches):
-		batch = 10
+		batch = 1
 		accounts = ['EOD' + str(j) for j in range(i*batch, i*batch+batch)]
 		#accounts = ['EOD0']
 
