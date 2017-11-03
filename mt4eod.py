@@ -21,7 +21,7 @@ def run_eod(positions, o):
 	mt4_request = {}
 	for p in positions:
 		send_eod_request(p, o)
-		time.sleep(0.5)
+		time.sleep(6)
 
 
 def send_eod_request(position, o):
