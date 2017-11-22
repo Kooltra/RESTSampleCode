@@ -4,6 +4,7 @@ import random
 import salesforce
 import time
 import calendar
+import requests
 
 def generate_new_spot_trade(account_code, trade_action, notional, rate, ccy1, ccy2, isMargin):
 	trade = {}
@@ -22,7 +23,7 @@ def generate_new_spot_trade(account_code, trade_action, notional, rate, ccy1, cc
 	trade['CounterAmount'] = notional * rate
 
 	if not isMargin:
-		trade['ValueDate'] = str(datetime.datetime.today())[:10].replace('-','')
+		trade['ValueDate'] = '20171122'#str(datetime.datetime.today())[:10].replace('-','')
 
 	return trade
 
@@ -30,25 +31,26 @@ def push_trades(account_code, num):
 	input_list = []
 	for i in range(num):
 		buysell = ['BUY', 'SELL'][random.randint(0,1)]
-		ccy_pairs = ['USDCAD', 'EURUSD', 'USDCHF', 'GBPUSD', 'EURCAD', 'USDNZD', 'USDJPY', 'AUDUSD']
+		ccy_pairs = ['USDCAD', 'GBPUSD']#'EURUSD', 'USDCHF', 'GBPUSD', 'EURCAD', 'USDNZD', 'USDJPY', 'AUDUSD']
 		#ccy_pairs = ccy_pairs + ['EURAUD', 'EURJPY', 'EURCHF', 'EURGBP', 'AUDCAD', 'GBPCHF', 'GBPJPY']
 		#ccy_pairs = ccy_pairs + ['CHFJPY', 'AUDJPY', 'AUDNZD']
 		pair = ccy_pairs[random.randint(0,len(ccy_pairs)-1)]
-		new_trade = generate_new_spot_trade(account_code, buysell, 1000+i, 1.2+i/100.0, pair[:3], pair[3:], True)
+		new_trade = generate_new_spot_trade(account_code, buysell, 1000+i, 1.2+i/100.0, pair[:3], pair[3:], False)
 		input_list.append(new_trade)
 
-	o = salesforce.OrgConnection()
+	o = salesforce.OrgConnection('Kooltra')
 
 	request = json.dumps({"submit":input_list})
 
-	o.conn.request('POST', o.base_url + 'transactions/Trade', headers=o.headers, body=request)
+	res = requests.post(o.base_url + 'transactions/Trade', headers=o.headers, data=request)
+	print(res.text)
 	
 
 num_accounts = 1
 for account in range(num_accounts):
-	accountCode = 'EOD' + str(account) #accountCode = 'EOD0'
-	num_trade_batches = 10
-	batch_size = 10
+	accountCode = 'TRDMCH' #'EOD' + str(account) #accountCode = 'EOD0'
+	num_trade_batches = 500 
+	batch_size = 30
 	for i in range(num_trade_batches):
 		push_trades(accountCode, batch_size)
 		time.sleep(1)
