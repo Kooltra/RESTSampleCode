@@ -3,42 +3,42 @@ import json
 import random
 import salesforce
 import time
+import requests
 
 def generate_new_account(name, code, entity, settlement_type, base_currency):
-	account = {}
-	account['ObjectType'] = 'Account'
-	account['Action'] = 'Create'
-	account['Entity'] = entity
-	account['Name'] = name
-	account['AccountCode'] = code
-	account['CounterpartyType'] = 'Company'
-	account['LegalName'] = name
-	account['Status'] = 'Active'
-	account['BaseCurrency'] = base_currency
-	account['SettlementType'] = settlement_type
+	account = {
+		'ObjectType': 'Account',
+		'Action': 'Create',
+		'Entity': entity,
+		'Name': name,
+		'AccountCode': code,
+		'CounterpartyType': 'Company',
+		'LegalName': name,
+		'Status': 'Active',
+		'BaseCurrency':  base_currency,
+		'SettlementType': settlement_type
+	}
 
 	return account
 
-def push_accounts(names, entity):
+def push_accounts(o, names, entity):
 	input_list = []
 	for name in names:
 		base_currency = ['EUR', 'USD', 'CAD', 'GBP'][random.randint(0,3)]
 		new_account = generate_new_account(name, name, entity, 'MT4 CLIENT', base_currency)
 		input_list.append(new_account)
 
-	o = salesforce.OrgConnection()
-
 	request = json.dumps({"submit":input_list})
-	o.conn.request('POST', o.base_url + 'staticdata/Account', headers=o.headers, body=request)
-
+	res = requests.post(o.base_url + 'staticdata/Account', headers=o.headers, data=request)
 
 def main():
-	num_batches = 10
+	num_batches = 1
 	entity = 'MT4TEST'
+	o = salesforce.OrgConnection('Kooltra')
 	for i in range(num_batches):
-		batch = 8
+		batch = 1
 		names = ['EOD' + str(j) for j in range(i*batch, i*batch + batch)]
-		push_accounts(names, entity)
+		push_accounts(o, names, entity)
 		time.sleep(2)
 
 if __name__ == '__main__':
