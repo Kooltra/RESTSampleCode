@@ -30,20 +30,18 @@ def push_accounts(o, names, entity):
 
 	request = json.dumps({"submit":input_list})
 	res = requests.post(o.base_url + 'staticdata/Account', headers=o.headers, data=request)
+	res.raise_for_status()
+	print(res.text)
 
 def main():
 	num_batches = 1
-	entity = 'MT4TEST'
-	o = salesforce.OrgConnection('Kooltra')
+	entity = 'RyanEODTest'
+	o = salesforce.OrgConnection('')
 	for i in range(num_batches):
 		batch = 1
-		names = ['EOD' + str(j) for j in range(i*batch, i*batch + batch)]
+		names = ['RyanEOD' + str(j) for j in range(i*batch, i*batch + batch)]
 		push_accounts(o, names, entity)
 		time.sleep(2)
 
 if __name__ == '__main__':
 	main()
-
-
-
-

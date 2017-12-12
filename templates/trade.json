@@ -1,0 +1,9 @@
+{
+  "Type": "FxTrade__c",
+  "Fields": {
+    "Name":"{timestamp}-{index}.0",
+    "Status__c":"Open",
+    "Type__c":"FXSPOT",
+    "ExecutionTime__c":"{timestamp}"
+  }
+}

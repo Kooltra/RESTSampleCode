@@ -4,6 +4,9 @@ import random
 import salesforce
 import requests
 import time
+import math
+from history import loadallids
+from dump import getaccountcodes
 
 def get_positions(o, account_codes):
 
@@ -44,19 +47,17 @@ def send_eod_request(o, position):
 
 	request = json.dumps({'submit':[mt4_request]})
 	res = requests.post(o.base_url + 'MT4BalanceMatching', headers=o.headers, data=request)
-
+	print(res.text)
 
 def main():
-	o = salesforce.OrgConnection('Kooltra')
-	num_batches = 1
-	for i in range(num_batches):
-		batch = 1
-#accounts = ['EOD' + str(j) for j in range(i*batch, i*batch+batch)]
-		accounts = ['MTT2']
+	o = salesforce.OrgConnection('')
+	accounts = getaccountcodes('core','a0A1C00000jaIFj')
+	batch_size = 10
+	num_batches = math.ceil(len(accounts)/batch_size)
 
-		positions = get_positions(o, accounts)
+	for i in range(num_batches):
+		positions = get_positions(o, accounts[(i * batch_size):((i+1) * batch_size)])
 		run_eod(o, positions)
 
 if __name__ == '__main__':
 	main()
-

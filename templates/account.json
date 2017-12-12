@@ -1,0 +1,12 @@
+{
+  "Type": "Account",
+  "Fields": {
+    "Entity__c":"a0A1C00000jaIFj",
+    "Name":"Test{index}",
+    "LegalName__c":"Test{index}",
+    "Code__c":"{timestamp}-{index}",
+    "Type__c":"Company",
+    "Status__c":"Active",
+    "SettlementType__c":"MT4 CLIENT"
+  }
+}
