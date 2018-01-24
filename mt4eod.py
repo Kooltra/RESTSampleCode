@@ -51,7 +51,7 @@ def send_eod_request(o, position):
 
 def main():
 	o = salesforce.OrgConnection('')
-	accounts = getaccountcodes('core','a0A1C00000jaIFj')
+	accounts = getaccountcodes('test','a0A1C00000jaO77')
 	batch_size = 10
 	num_batches = math.ceil(len(accounts)/batch_size)
 

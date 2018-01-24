@@ -1,0 +1,13 @@
+{
+  "Type": "Account",
+  "Namespace": "Kooltra",
+  "Fields": {
+    "Name":"Test{index}",
+    "Kooltra__Entity__c":"a063600000Ebxfq",
+    "Kooltra__LegalName__c":"Test{index}",
+    "Kooltra__Code__c":"{timestamp}-{index}",
+    "Kooltra__Type__c":"Company",
+    "Kooltra__Status__c":"Active",
+    "Kooltra__SettlementType__c":"MT4 CLIENT"
+  }
+}

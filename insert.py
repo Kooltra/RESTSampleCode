@@ -11,7 +11,7 @@ import random
 
 def inittemplate(env, template):
     #todo find a way to remove domain specific logic
-    if template['Type'] == 'FxTrade__c':
+    if  'FxTrade__c' in template['Type']:
         template['accounts'] = loadallids(env,'Account')
 
 
@@ -22,20 +22,23 @@ def generatefields(idx, template):
                 timestamp=ts
             ) for k, v in template['Fields'].items()
         }
+    prefix = ''
+    if 'Namespace' in template:
+        prefix = template['Namespace'] + '__'
     #todo find a way to remove domain specific logic
     if template['Type'] == 'Account':
-        fields['BaseCurrency__c'] = ['EUR', 'USD', 'CAD', 'GBP'][random.randint(0,3)]
-    elif template['Type'] == 'FxTrade__c':
+        fields[prefix+'BaseCurrency__c'] = ['EUR', 'USD', 'CAD', 'GBP'][random.randint(0,3)]
+    elif template['Type'] == prefix+'FxTrade__c':
         ccy_pairs = ['USDCAD', 'GBPUSD', 'EURUSD', 'USDCHF', 'GBPUSD', 'EURCAD', 'USDNZD', 'USDJPY', 'AUDUSD']
         pair = ccy_pairs[random.randint(0,len(ccy_pairs)-1)]
-        fields['TradeDate__c'] = datetime.datetime.today()
-        fields['Action__c'] = ['BUY', 'SELL'][random.randint(0,1)]
-        fields['Account__c'] = template['accounts'][random.randint(0,len(template['accounts'])-1)]
-        fields['Amount1__c'] = 1000*idx
-        fields['Rate__c'] = 1.2+idx/100.0
-        fields['Amount2__c'] = fields['Amount1__c']*fields['Rate__c']
-        fields['Currency1__c'] = pair[:3]
-        fields['Currency2__c'] = pair[3:]
+        fields[prefix+'TradeDate__c'] = datetime.datetime.today().replace(hour=1)
+        fields[prefix+'Action__c'] = ['BUY', 'SELL'][random.randint(0,1)]
+        fields[prefix+'Account__c'] = template['accounts'][random.randint(0,len(template['accounts'])-1)]
+        fields[prefix+'Amount1__c'] = 1000*idx
+        fields[prefix+'Rate__c'] = 1.2+idx/100.0
+        fields[prefix+'Amount2__c'] = fields[prefix+'Amount1__c']*fields[prefix+'Rate__c']
+        fields[prefix+'Currency1__c'] = pair[:3]
+        fields[prefix+'Currency2__c'] = pair[3:]
     return fields
 
 

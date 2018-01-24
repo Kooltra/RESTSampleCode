@@ -1,0 +1,9 @@
+{
+  "Type": "Kooltra__FxTrade__c",
+  "Namespace": "Kooltra",
+  "Fields": {
+    "Name":"{timestamp}-{index}.0",
+    "Kooltra__Status__c":"Open",
+    "Kooltra__Type__c":"FXSPOT"
+  }
+}

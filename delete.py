@@ -7,13 +7,17 @@ import sys
 import json
 import time
 
+
 def main():
 
     if len(sys.argv) < 3:
-        print('usage: python3 delete.py [env] [object type]')
+        print('usage: python3 delete.py [env] [object type] [namespace]')
         return -1
     env = sys.argv[1]
     objecttype = sys.argv[2]
+    namespacePrefix = ''
+    if len(sys.argv) > 3:
+        namespacePrefix = sys.argv[3] + '__'
 
     print('connecting to salesforce bulk api with env {env}'.format(env=env))
     creds = json.load(open('env/{env}/credentials.json'.format(env=env), 'r'))
@@ -30,7 +34,6 @@ def main():
     #bulk.wait_for_batch(job, batch)
     bulk.close_job(job)
 
-
     print('waiting for batch')
     t0 = time.time()
     while not bulk.is_batch_done(batch):
@@ -45,7 +48,7 @@ def main():
     print('clearing history')
     clearhistory(env,objecttype)
     if objecttype.lower() == 'account':
-        clearhistory(env, 'FxTrade__c')
+        clearhistory(env, namespacePrefix+'FxTrade__c')
 
     print("done in %.2fs" % (t1-t0))
 

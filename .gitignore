@@ -13,7 +13,7 @@ credentials.json.*
 
 # Distribution / packaging
 .Python
-env/
+env/*/history
 build/
 develop-eggs/
 dist/
@@ -90,7 +90,6 @@ celerybeat-schedule
 # virtualenv
 .venv
 venv/
-ENV/
 
 # Spyder project settings
 .spyderproject

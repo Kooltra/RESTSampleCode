@@ -21,7 +21,7 @@ class OrgConnection:
 			self.base_url += name_space + '/'
 
 	def soql(self, query):
-		res = requests.get(self.query_url + '?q=' + urllib.parse.quote_plus(query), headers=self.headers)
+		res = requests.get(self.query_url, params= 'q=' + query.replace(' ','+'), headers=self.headers)
 		res.raise_for_status()
 		return res.text
 
